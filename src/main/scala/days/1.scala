@@ -1,28 +1,29 @@
 package aoc_2020
 
 
-import cats.effect._
+import cats.effect.Sync
 import cats.implicits._
 import cats.Monad
 import Utils._
 
 
-object Day1 extends Exercise[String, String]:
+object Day1 extends ExerciseWithInputFile:
 
-  val day = 1
+  type Out = String
+  val day  = 1
 
-  def run[F[_] : Effect : LiftIO : Monad](path: String): F[String] =
+  def run[F[_] : Monad : Sync](path: String): F[Out] =
     for
-      input <- readFile[F](path)
-      p1    <- IO(process(input, 2)).to[F]
-      p2    <- IO(process(input, 3)).to[F]
+      in <- readFile[F](path)
+      p1 <- M pure process(in, 2)
+      p2 <- M pure process(in, 3)
     yield
-      s"part 1 -> $p1 part 2 -> $p2"
+      s"part 1 -> $p1, part 2 -> $p2"
 
   def process(entries: String, n: Int): Int =
     entries.split("\n")
+           .map(_.toInt)
            .combinations(n)
-           .map  { case xs => xs.map(_.toInt) }
-           .find { case xs => xs.sum == 2020 }
+           .find(_.sum == 2020)
            .head
-           .reduce(_ * _)
+           .product

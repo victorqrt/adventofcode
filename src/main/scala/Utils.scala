@@ -5,24 +5,32 @@ import cats.effect._
 import cats.implicits._
 import cats.Monad
 import scala.io.Source
+import Utils._
 
 
-trait Exercise[A, B]:
+trait Exercise[In]:
+
+  type Out
 
   def day: Int
 
-  def run[F[_] : Effect : LiftIO : Monad](a: A): F[B]
+  def run[F[_] : Monad : Sync](a: In): F[Out]
 
-  def runWithReport[F[_] : Effect : LiftIO : Monad](a: A): F[B] =
+  def runWithReport[F[_] : Monad : Sync](a: In): F[Out] =
     for
-      res <- run[F](a)
-      _   <- IO(println(s"Day $day ran on $a, result : $res")).to[F]
+      out <- run[F](a)
+      _   <- M pure println(s"Day $day ran $a, result : $out")
     yield
-      res
+      out
+
+
+type ExerciseWithInputFile = Exercise[String]
 
 
 object Utils:
 
-  def readFile[F[_] : Effect : LiftIO : Monad](path: String): F[String] =
-    Resource.fromAutoCloseable(IO(Source.fromFile(path)).to[F])
-            .use(source => IO(source.mkString).to[F])
+  inline def M[F[_] : Monad] = summon
+
+  def readFile[F[_] : Monad : Sync](path: String): F[String] =
+    Resource.fromAutoCloseable(M pure Source.fromFile(path))
+            .use(M pure _.mkString)
