@@ -11,6 +11,7 @@ object Main extends IOApp:
     ( Day1 -> "inputs/input.1.txt"
     , Day2 -> "inputs/input.2.txt"
     , Day3 -> "inputs/input.3.txt"
+    , Day4 -> "inputs/input.4.txt"
     )
 
   def run(args: List[String]) =
