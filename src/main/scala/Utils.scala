@@ -29,6 +29,9 @@ type ExerciseWithInputFile = Exercise[String]
 
 object Utils:
 
+  extension [T](t: T)(using o: Ordering[T])
+    def between(l: T, u: T): Boolean = o.gteq(t, l) && o.gteq(u, t)
+
   inline def M[F[_] : Monad] = summon
 
   def readFile[F[_] : Monad : Sync](path: String): F[String] =

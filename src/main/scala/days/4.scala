@@ -41,28 +41,21 @@ object Day4 extends ExerciseWithInputFile:
         .zip(md map (_ group 2))
         .toMap
 
-    val byr = pairs.get("byr").map(_.toInt).getOrElse(0)
-    val iyr = pairs.get("iyr").map(_.toInt).getOrElse(0)
-    val eyr = pairs.get("eyr").map(_.toInt).getOrElse(0)
-    val hgt = pairs.getOrElse("hgt", "")
-    val hcl = pairs.getOrElse("hcl", "")
-    val ecl = pairs.getOrElse("ecl", "")
-    val pid = pairs.getOrElse("pid", "")
+    val byrOk = pairs.get("byr").map(_.toInt).getOrElse(0).between(1920, 2002)
+    val eyrOk = pairs.get("eyr").map(_.toInt).getOrElse(0).between(2020, 2030)
+    val iyrOk = pairs.get("iyr").map(_.toInt).getOrElse(0).between(2010, 2020)
+    val eclOk = eyeColors contains pairs.getOrElse("ecl", "")
+    val pidOk = "\\d{9}".r matches pairs.getOrElse("pid", "")
 
     val hgtOk =
-      hgt match
-        case s"${cm}cm" => cm.toInt >= 150 && cm.toInt <= 193
-        case s"${in}in" => in.toInt >= 59 && in.toInt <= 76
+      pairs.getOrElse("hgt", "") match
+        case s"${cm}cm" => cm.toInt.between(150, 193)
+        case s"${in}in" => in.toInt.between(59, 76)
         case _          => false
 
     val hclOk =
-      hcl match
+      pairs.getOrElse("hcl", "") match
         case s"#${color}" => "[a-f\\d]{6}".r matches color
         case _            => false
 
-    byr >= 1920 && byr <= 2002 &&
-    iyr >= 2010 && iyr <= 2020 &&
-    eyr >= 2020 && eyr <= 2030 &&
-    (eyeColors contains ecl)   &&
-    ("\\d{9}".r matches pid)   &&
-    hgtOk && hclOk
+    byrOk && eclOk && eyrOk && hgtOk && hclOk && iyrOk && pidOk
