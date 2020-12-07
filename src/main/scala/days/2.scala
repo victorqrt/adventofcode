@@ -29,8 +29,7 @@ object Day2 extends ExerciseWithInputFile:
   def partOne(entry: String): Boolean =
     entry match
       case re(min, max, l, pwd) =>
-        val c = pwd count (_ == (l charAt 0))
-        c >= min.toInt && c <= max.toInt
+        (pwd count (_ == (l charAt 0))).between(min.toInt, max.toInt)
       case _ => false
 
   def partTwo(entry: String): Boolean =

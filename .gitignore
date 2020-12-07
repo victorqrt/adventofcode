@@ -1,5 +1,9 @@
 .bsp
+.bloop
+.metals
+.vscode
 project/
 target
 
+*.worksheet.sc
 !project/plugins.sbt
