@@ -25,9 +25,7 @@ object Day7 extends ExerciseWithInputFile:
   def parse(line: String): (String, Seq[String]) =
     line match
       case s"$color bags contain $contents." =>
-        color -> contents.replaceAll("bags", "")
-                         .replaceAll("bag", "")
-                         .replaceAll("\\.", "")
+        color -> contents.replaceAll("bags?\\.?", "")
                          .split(",")
                          .map(_.trim)
                          .toIndexedSeq
