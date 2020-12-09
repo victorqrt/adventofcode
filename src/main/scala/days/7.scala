@@ -6,6 +6,7 @@ import cats.implicits._
 import cats.Monad
 import Utils._
 import scala.annotation.tailrec
+import scala.collection.immutable.ArraySeq
 
 
 object Day7 extends ExerciseWithInputFile:
@@ -51,13 +52,13 @@ object Day7 extends ExerciseWithInputFile:
   def partTwo(color: String, rules: Map[String, Seq[String]]): Int =
 
     @tailrec
-    def go(todo: List[String], acc: Int): Int =
+    def go(todo: ArraySeq[String], acc: Int): Int =
       if (todo.isEmpty) acc
       else
         val next = rules(todo.head) flatMap {
-          case "no other"   => List.empty
-          case s"$n $color" => List.fill(n.toInt)(color) }
+          case "no other"   => ArraySeq.empty[String]
+          case s"$n $color" => ArraySeq.fill(n.toInt)(color) }
 
         go(todo.tail ++ next, acc + next.size)
 
-    go(List(color), 0)
+    go(ArraySeq(color), 0)

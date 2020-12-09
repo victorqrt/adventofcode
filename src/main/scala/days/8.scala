@@ -18,7 +18,7 @@ object Day8 extends ExerciseWithInputFile:
       in   <- readFile[F](path)
       prog <- M pure parse(in)
       p1   <- M pure partOne(prog)
-      p2   <- M pure partTwo(prog, labelsToFlip(prog))
+      p2   <- M pure partTwo(prog)
     yield
       s"part 1 -> $p1, part 2 -> $p2"
 
@@ -29,11 +29,6 @@ object Day8 extends ExerciseWithInputFile:
 
   def flip(i: Instruction): Instruction =
     i.copy(op = if (i.op == Op.Nop) Op.Jmp else Op.Nop)
-
-  def labelsToFlip(is: List[Instruction]): Set[Int] =
-    is.filter { case Instruction(op, _, _) => op != Op.Acc }
-      .map(_._3)
-      .toSet
 
   def strToOp(s: String): Op = s match
     case "acc" => Op.Acc
@@ -53,7 +48,7 @@ object Day8 extends ExerciseWithInputFile:
   def eval(is: List[Instruction], history: Set[Int], isp: Int, acc: Int):
     (Boolean, Int) =
     if (history contains isp) false -> acc
-    else if (is.isEmpty || isp >= is.size) true -> acc
+    else if (isp >= is.size) true -> acc
     else is(isp) match
       case Instruction(Op.Jmp, offset, l) =>
         eval(is, history + l, isp + offset, acc)
@@ -62,11 +57,10 @@ object Day8 extends ExerciseWithInputFile:
       case Instruction(Op.Nop, _, l) =>
         eval(is, history + l, isp + 1, acc)
 
-  @tailrec
-  def partTwo(is: List[Instruction], toFlip: Set[Int]): Int =
-    if (toFlip.isEmpty) 0
-    else
-      val idx = toFlip.head
-      val res = eval(is.updated(idx, flip(is(idx))), Set.empty, 0, 0)
-      if (res._1) res._2
-      else partTwo(is, toFlip.tail)
+  def partTwo(is: List[Instruction]): Int =
+    is.filter { case Instruction(op, _, _) => op != Op.Acc }
+      .toSet
+      .map(i => eval(is.updated(i.label, flip(i)), Set.empty, 0, 0))
+      .find(_._1)
+      .map(_._2)
+      .get
