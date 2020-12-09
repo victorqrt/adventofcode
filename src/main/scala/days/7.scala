@@ -51,13 +51,13 @@ object Day7 extends ExerciseWithInputFile:
   def partTwo(color: String, rules: Map[String, Seq[String]]): Int =
 
     @tailrec
-    def go(todo: List[String], acc: Int): Int =
+    def go(todo: Array[String], acc: Int): Int =
       if (todo.isEmpty) acc
       else
         val next = rules(todo.head) flatMap {
-          case "no other"   => List.empty
-          case s"$n $color" => List.fill(n.toInt)(color) }
+          case "no other"   => Array.empty[String]
+          case s"$n $color" => Array.fill(n.toInt)(color) }
 
         go(todo.tail ++ next, acc + next.size)
 
-    go(List(color), 0)
+    go(Array(color), 0)
