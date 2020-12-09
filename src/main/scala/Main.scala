@@ -21,4 +21,5 @@ object Main extends IOApp:
     , Day6 -> "inputs/input.6.txt"
     , Day7 -> "inputs/input.7.txt"
     , Day8 -> "inputs/input.8.txt"
+    , Day9 -> "inputs/input.9.txt"
     )
