@@ -19,7 +19,7 @@ trait Exercise[In]:
   def runWithReport[F[_] : Monad : Sync](a: In): F[Out] =
     for
       out <- run[F](a)
-      _   <- M pure println(s"Day $day ran $a, result : $out")
+      _   <- S delay println(s"Day $day ran $a, result : $out")
     yield
       out
 
@@ -29,11 +29,14 @@ type ExerciseWithInputFile = Exercise[String]
 
 object Utils:
 
+  inline def M[F[_] : Monad] = summon
+  inline def S[F[_] : Sync]  = summon
+
+  extension (b: Boolean) def toInt: Int = if (b) 1 else 0
+
   extension [T](t: T)(using o: Ordering[T])
     def between(l: T, u: T): Boolean = o.gteq(t, l) && o.gteq(u, t)
 
-  inline def M[F[_] : Monad] = summon
-
-  def readFile[F[_] : Monad : Sync](path: String): F[String] =
-    Resource.fromAutoCloseable(M pure Source.fromFile(path))
-            .use(M pure _.mkString)
+  def readFile[F[_] : Sync](path: String): F[String] =
+    Resource.fromAutoCloseable(S delay Source.fromFile(path))
+            .use(S delay _.mkString)

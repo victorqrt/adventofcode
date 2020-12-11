@@ -25,7 +25,7 @@ object Day4 extends ExerciseWithInputFile:
 
   def process(entries: String, validate: MatchIterator => Boolean): Int =
     entries.split("(?m)^\\s*$")
-           .map("""[\s]*(\w+):([#\w]+)""".r.findAllIn(_))
+           .map("""[\s]*(\w+):([#\w]+)""".r.findAllIn)
            .filter(validate)
            .size
 

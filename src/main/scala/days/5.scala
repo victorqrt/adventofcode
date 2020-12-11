@@ -36,9 +36,7 @@ object Day5 extends ExerciseWithInputFile:
     8 * row(str.substring(0, 7)) + col(str.substring(7))
 
   def part1(entries: String): Int =
-    entries.split("\n")
-           .map(seatNumber)
-           .max
+    entries.split("\n").map(seatNumber).max
 
   def part2(entries: String): Int =
 
