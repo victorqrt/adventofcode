@@ -1,17 +1,15 @@
-package aoc_2020
+package aoc.twenty20
 
 
-import cats.effect.Sync
-import cats.implicits._
-import cats.Monad
-import Utils._
+import aoc._
+import aoc.Utils._
 import scala.annotation.tailrec
 
 
-object Day3 extends ExerciseWithInputFile:
+object Day3 extends Exercise:
 
-  type Out = String
   val day  = 3
+  val year = 2020
 
   val part2Slopes = List
     ( 1 -> 1
@@ -20,14 +18,6 @@ object Day3 extends ExerciseWithInputFile:
     , 7 -> 1
     , 1 -> 2
     )
-
-  def run[F[_] : Monad : Sync](path: String): F[Out] =
-    for
-      in <- readFile[F](path)
-      p1 <- M pure process(in, (3, 1))
-      p2 <- M pure part2Slopes.map(process(in, _).toLong).product
-    yield
-      s"part 1 -> $p1, part 2 -> $p2"
 
   def process(entries: String, slope: (Int, Int)): Int =
 
@@ -48,3 +38,9 @@ object Day3 extends ExerciseWithInputFile:
         go(tc, (x + slope._1) % width, y + slope._2)
 
     go(0, 0, 0)
+
+
+  def partOne(in: String): Int = process(in, (3, 1))
+
+  def partTwo(in: String): Long =
+    part2Slopes.map(process(in, _).toLong).product

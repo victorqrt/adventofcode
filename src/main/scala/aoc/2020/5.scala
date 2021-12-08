@@ -1,24 +1,14 @@
-package aoc_2020
+package aoc.twenty20
 
 
-import cats.effect.Sync
-import cats.implicits._
-import cats.Monad
-import Utils._
+import aoc._
+import aoc.Utils._
 
 
-object Day5 extends ExerciseWithInputFile:
+object Day5 extends Exercise:
 
-  type Out = String
   val day  = 5
-
-  def run[F[_] : Monad : Sync](path: String): F[Out] =
-    for
-      in <- readFile[F](path)
-      p1 <- M pure part1(in)
-      p2 <- M pure part2(in)
-    yield
-      s"part 1 -> $p1, part 2 -> $p2"
+  val year = 2020
 
   def partition(c: Char, min: Int, max: Int): (Int, Int) =
     val m = (min + max) / 2
@@ -35,11 +25,10 @@ object Day5 extends ExerciseWithInputFile:
   def seatNumber(str: String): Int =
     8 * row(str.substring(0, 7)) + col(str.substring(7))
 
-  def part1(entries: String): Int =
+  def partOne(entries: String): Int =
     entries.split("\n").map(seatNumber).max
 
-  def part2(entries: String): Int =
-
+  def partTwo(entries: String): Int =
     val seats = entries.split("\n") map seatNumber
 
     (0 to 127 * 8).filter((n: Int) =>

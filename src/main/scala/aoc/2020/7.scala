@@ -1,27 +1,16 @@
-package aoc_2020
+package aoc.twenty20
 
 
-import cats.effect.Sync
-import cats.implicits._
-import cats.Monad
-import Utils._
+import aoc._
+import aoc.Utils._
 import scala.annotation.tailrec
 import scala.collection.immutable.ArraySeq
 
 
-object Day7 extends ExerciseWithInputFile:
+object Day7 extends Exercise:
 
-  type Out = String
   val day  = 7
-
-  def run[F[_] : Monad : Sync](path: String): F[Out] =
-    for
-      in <- readFile[F](path)
-      r  <- M pure getRules(in)
-      p1 <- M pure partOne("shiny gold", r)
-      p2 <- M pure partTwo("shiny gold", r)
-    yield
-      s"part 1 -> $p1, part 2 -> $p2"
+  val year = 2020
 
   def parse(line: String): (String, Seq[String]) =
     line match
@@ -36,7 +25,7 @@ object Day7 extends ExerciseWithInputFile:
       .map(parse)
       .toMap
 
-  def partOne(color: String, rules: Map[String, Seq[String]]): Int =
+  def one(color: String, rules: Map[String, Seq[String]]): Int =
 
     @tailrec
     def go(todo: Set[String], acc: Set[String]): Set[String] =
@@ -49,7 +38,7 @@ object Day7 extends ExerciseWithInputFile:
 
     go(Set(color), Set.empty).size
 
-  def partTwo(color: String, rules: Map[String, Seq[String]]): Int =
+  def two(color: String, rules: Map[String, Seq[String]]): Int =
 
     @tailrec
     def go(todo: ArraySeq[String], acc: Int): Int =
@@ -62,3 +51,7 @@ object Day7 extends ExerciseWithInputFile:
         go(todo.tail ++ next, acc + next.size)
 
     go(ArraySeq(color), 0)
+
+  def partOne(in: String): Int = one("shiny gold", getRules(in))
+
+  def partTwo(in: String): Int = two("shiny gold", getRules(in))

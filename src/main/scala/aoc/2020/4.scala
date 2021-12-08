@@ -1,27 +1,17 @@
-package aoc_2020
+package aoc.twenty20
 
 
-import cats.effect.Sync
-import cats.implicits._
-import cats.Monad
-import Utils._
+import aoc._
+import aoc.Utils._
 import scala.util.matching.Regex._
 
 
-object Day4 extends ExerciseWithInputFile:
+object Day4 extends Exercise:
 
-  type Out      = String
   val day       = 4
+  val year      = 2020
   val fields    = Set("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
   val eyeColors = Set("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
-
-  def run[F[_] : Monad : Sync](path: String): F[Out] =
-    for
-      in <- readFile[F](path)
-      p1 <- M pure process(in, validate1)
-      p2 <- M pure process(in, validate2)
-    yield
-      s"part 1 -> $p1, part 2 -> $p2"
 
   def process(entries: String, validate: MatchIterator => Boolean): Int =
     entries.split("(?m)^\\s*$")
@@ -59,3 +49,7 @@ object Day4 extends ExerciseWithInputFile:
         case _            => false
 
     byrOk && eclOk && eyrOk && hgtOk && hclOk && iyrOk && pidOk
+
+  def partOne(in: String) = process(in, validate1)
+
+  def partTwo(in: String) = process(in, validate2)

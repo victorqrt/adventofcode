@@ -7,3 +7,4 @@ target
 
 *.worksheet.sc
 !project/plugins.sbt
+!project/build.properties
