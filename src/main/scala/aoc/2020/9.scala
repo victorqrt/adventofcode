@@ -1,4 +1,4 @@
-package aoc.twenty20
+package aoc.y20
 
 
 import aoc._
@@ -6,13 +6,14 @@ import aoc.Utils._
 import scala.annotation.tailrec
 
 
-object Day9 extends Exercise:
+object Day9 extends Exercise[Array[Long]]:
 
   val day  = 9
   val year = 2020
 
-  def partOne(in: String): Long =
+  def parse(str: String) = str.split('\n').map(_.toLong)
 
+  def partOne(in: Input): Long =
     @tailrec
     def go(arr: Array[Long], i: Int, offset: Int): Long =
       val end = i + offset
@@ -22,10 +23,9 @@ object Day9 extends Exercise:
         if (sums contains arr(end)) go(arr, i + 1, offset)
         else arr(end)
 
-    go(in.split('\n').map(_.toLong), 1, 25)
+    go(in, 1, 25)
 
-  def partTwo(in: String): Long =
-
+  def partTwo(in: Input): Long =
     @tailrec
     def go(arr: Array[Long], i: Int, len: Int, res: Long): Long =
       if (i + len >= arr.size) 0
@@ -36,4 +36,4 @@ object Day9 extends Exercise:
         else if (sum > res) go(arr, i + 1, 1, res)
         else go(arr, i, len + 1, res)
 
-    go(in.split('\n').map(_.toLong), 1, 1, partOne(in))
+    go(in, 1, 1, partOne(in))

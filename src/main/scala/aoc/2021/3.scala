@@ -1,4 +1,4 @@
-package aoc.twenty21
+package aoc.y21
 
 
 import aoc._
@@ -6,13 +6,14 @@ import aoc.Utils._
 import scala.annotation.tailrec
 
 
-object Day3 extends Exercise:
+object Day3 extends Exercise[Array[String]]:
 
   val day  = 3
   val year = 2021
 
-  def partOne(in: String): Int =
-    val arr     = in.split("\n")
+  def parse(str: String) = str split '\n'
+
+  def partOne(arr: Input): Int =
     val epsilon = arr.head
       .zipWithIndex
       .map((_, i) => {
@@ -25,9 +26,7 @@ object Day3 extends Exercise:
 
     Integer.parseInt(epsilon, 2) * Integer.parseInt(gamma, 2)
 
-  def partTwo(in: String): Int =
-    val arr = in.split("\n")
-
+  def partTwo(arr: Input): Int =
     @tailrec
     def go(_arr: Array[String], i: Int, cmp: (Int, Int) => Boolean): Int =
       if _arr.size > 1 then

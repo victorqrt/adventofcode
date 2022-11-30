@@ -1,23 +1,29 @@
-package aoc.twenty20
+package aoc.y20
 
 
 import aoc._
 import aoc.Utils._
 import scala.util.matching.Regex._
+import aoc._
+import aoc.Utils._
+import scala.util.matching.Regex._
 
 
-object Day4 extends Exercise:
+object Day4 extends Exercise[Array[String]]:
 
   val day       = 4
   val year      = 2020
   val fields    = Set("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
   val eyeColors = Set("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
 
-  def process(entries: String, validate: MatchIterator => Boolean): Int =
-    entries.split("(?m)^\\s*$")
-           .map("""[\s]*(\w+):([#\w]+)""".r.findAllIn)
-           .filter(validate)
-           .size
+  def parse(str: String) = str split "(?m)^\\s*$"
+
+  def partOne(in: Input) = process(in, validate1)
+  def partTwo(in: Input) = process(in, validate2)
+
+  def process(in: Input, validate: MatchIterator => Boolean): Int =
+    in.map("""[\s]*(\w+):([#\w]+)""".r.findAllIn)
+      .count(validate)
 
   def validate1(keys: MatchIterator): Boolean =
     fields forall (keys.matchData map (_ group 1)).toSet.contains
@@ -49,7 +55,3 @@ object Day4 extends Exercise:
         case _            => false
 
     byrOk && eclOk && eyrOk && hgtOk && hclOk && iyrOk && pidOk
-
-  def partOne(in: String) = process(in, validate1)
-
-  def partTwo(in: String) = process(in, validate2)

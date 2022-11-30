@@ -1,19 +1,22 @@
-package aoc.twenty20
+package aoc.y20
 
 
 import aoc._
 import aoc.Utils._
 
 
-object Day2 extends Exercise:
+object Day2 extends Exercise[Array[String]]:
   val day  = 2
   val year = 2020
   val re   = """(\d+)-(\d+)\s([a-z]):\s([a-z]+)""".r
 
-  def process(entries: String, f: String => Boolean): Int =
-    entries.split("\n")
-           .map(f)
-           .count(_ == true)
+  def parse(str: String) = str split "\n"
+  
+  def partOne(in: Input) = process(in, one)
+  def partTwo(in: Input) = process(in, two)
+
+  def process(entries: Input, f: String => Boolean): Int =
+    entries.map(f).count(_ == true)
 
   def one(entry: String): Boolean =
     entry match
@@ -29,7 +32,3 @@ object Day2 extends Exercise:
         val i2 = idx2.toInt - 1
         ((pwd charAt i1) == c) ^ ((pwd charAt i2) == c)
       case _ => false
-
-  def partOne(in: String) = process(in, one)
-
-  def partTwo(in: String) = process(in, two)

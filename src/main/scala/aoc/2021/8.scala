@@ -1,4 +1,4 @@
-package aoc.twenty21
+package aoc.y21
 
 
 import aoc._
@@ -6,19 +6,20 @@ import aoc.Utils._
 import scala.annotation.tailrec
 
 
-object Day8 extends Exercise:
+object Day8 extends Exercise[Array[String]]:
 
   val day  = 8
   val year = 2021
 
-  def partOne(in: String): Int =
-    in.split("\n")
-      .flatMap(_.split("""\s+\|\s+""").tail.flatMap(_ split " "))
+  def parse(str: String) = str split '\n'
+
+  def partOne(in: Input): Int =
+    in.flatMap(_.split("""\s+\|\s+""").tail.flatMap(_ split " "))
       .count(Array(2, 3, 4, 7) contains _.size)
 
-  def partTwo(in: String): Int =
+  def partTwo(in: Input): Int =
 
-    val lines = in.split("\n").map(_.split("""\s+\|\s+""").map(_ split " "))
+    val lines = in.map(_.split("""\s+\|\s+""").map(_ split " "))
     val sigs  = lines.map(_(0).map(_.sorted))
     val dgts  = lines.map(_(1).map(_.sorted))
 

@@ -1,18 +1,21 @@
-package aoc.twenty20
+package aoc.y20
 
 
 import aoc._
 import aoc.Utils._
 
 
-object Day6 extends Exercise:
+object Day6 extends Exercise[Array[String]]:
 
   val day  = 6
   val year = 2020
 
-  def partOne(entries: String): Int =
-    entries.split("(?m)^\\s*$").map(_.replaceAll("\n", "").toSet.size).sum
+  def parse(str: String) = str split "(?m)^\\s*$"
 
-  def partTwo(entries: String): Int =
-    entries.split("(?m)^\\s*$")
-           .map(l => l.trim.split("\n").reduce(_ intersect _).size).sum
+  def partOne(entries: Input): Int =
+    entries.map(_.replaceAll("\n", "").toSet.size)
+           .sum
+
+  def partTwo(entries: Input): Int =
+    entries.map(l => l.trim.split("\n").reduce(_ intersect _).size)
+           .sum

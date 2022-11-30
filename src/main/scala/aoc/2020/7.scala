@@ -1,4 +1,4 @@
-package aoc.twenty20
+package aoc.y20
 
 
 import aoc._
@@ -7,12 +7,14 @@ import scala.annotation.tailrec
 import scala.collection.immutable.ArraySeq
 
 
-object Day7 extends Exercise:
+object Day7 extends Exercise[Map[String, Seq[String]]]:
 
   val day  = 7
   val year = 2020
 
-  def parse(line: String): (String, Seq[String]) =
+  def parse(str: String) = str.split("\n").map(parseLine).toMap
+
+  def parseLine(line: String): (String, Seq[String]) =
     line match
       case s"$color bags contain $contents." =>
         color -> contents.replaceAll("bags?", "")
@@ -20,12 +22,10 @@ object Day7 extends Exercise:
                          .map(_.trim)
                          .toIndexedSeq
 
-  def getRules(in: String): Map[String, Seq[String]] =
-    in.split("\n")
-      .map(parse)
-      .toMap
+  def partOne(in: Input): Int = one("shiny gold", in)
+  def partTwo(in: Input): Int = two("shiny gold", in)
 
-  def one(color: String, rules: Map[String, Seq[String]]): Int =
+  def one(color: String, rules: Input): Int =
 
     @tailrec
     def go(todo: Set[String], acc: Set[String]): Set[String] =
@@ -38,7 +38,7 @@ object Day7 extends Exercise:
 
     go(Set(color), Set.empty).size
 
-  def two(color: String, rules: Map[String, Seq[String]]): Int =
+  def two(color: String, rules: Input): Int =
 
     @tailrec
     def go(todo: ArraySeq[String], acc: Int): Int =
@@ -51,7 +51,3 @@ object Day7 extends Exercise:
         go(todo.tail ++ next, acc + next.size)
 
     go(ArraySeq(color), 0)
-
-  def partOne(in: String): Int = one("shiny gold", getRules(in))
-
-  def partTwo(in: String): Int = two("shiny gold", getRules(in))

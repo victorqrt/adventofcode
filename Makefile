@@ -17,5 +17,6 @@ target:
 
 native: aoc
 	strip -s aoc
+	[ -x "$(command -v upx)" ] && upx aoc
 
 .PHONY: all clean native

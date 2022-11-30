@@ -9,17 +9,22 @@ import scala.quoted._
 import Utils._
 
 
-trait Exercise:
+trait Exercise[A]:
+
+  type Input = A
 
   def day: Int
   def year: Int
 
-  def partOne(input: String): Any
-  def partTwo(input: String): Any
+  def parse(str: String): Input
+
+  def partOne(in: Input): Any
+  def partTwo(in: Input): Any
 
   def run[F[_] : Monad : Sync](path: String): F[Unit] =
     for
-      in <- readFile[F](path)
+      fd <- readFile[F](path)
+      in = parse(fd)
       p1 = partOne(in)
       p2 = partTwo(in)
       _  <- S delay println(s"[$year] [Day $day] $p1, $p2")
@@ -29,7 +34,7 @@ trait Exercise:
 
 object Utils:
 
-  inline def S[F[_] : Sync]  = summon
+  inline def S[F[_] : Sync] = summon
 
   def readFile[F[_] : Sync](path: String): F[String] =
     Resource.fromAutoCloseable(S delay Source.fromFile(path))
@@ -39,19 +44,19 @@ object Utils:
     def toInt: Int = if b then 1 else 0
 
   extension (s: String)
+    def diff(s2: String): Set[Char] =
+      s.toArray.toSet -- s2.toArray.toSet
+
+    def inside(s2: String): Boolean =
+      s.toArray.toSet subsetOf s2.toArray.toSet
+
     def negateBits: String = s map {
       case '0' => '1'
       case _   => '0'
     }
 
-  extension (s: String) def diff(s2: String): Set[Char] =
-    s.toArray.toSet -- s2.toArray.toSet
-
-  extension (s: String) def inside(s2: String): Boolean =
-    s.toArray.toSet subsetOf s2.toArray.toSet
-
-  extension [K, V](m: Map[K, V]) def keyOf(v: V): K =
-    m.find((_, _v) => _v == v).get._1
+  extension [K, V](m: Map[K, V])
+    def keyOf(v: V): K = m.find((_, _v) => _v == v).get._1
 
   extension [T](t: T)(using o: Ordering[T])
     def between(l: T, u: T): Boolean = o.gteq(t, l) && o.gteq(u, t)

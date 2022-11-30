@@ -1,4 +1,4 @@
-package aoc.twenty20
+package aoc.y20
 
 
 import aoc._
@@ -6,7 +6,7 @@ import aoc.Utils._
 import scala.annotation.tailrec
 
 
-object Day3 extends Exercise:
+object Day3 extends Exercise[Array[String]]:
 
   val day  = 3
   val year = 2020
@@ -19,9 +19,14 @@ object Day3 extends Exercise:
     , 1 -> 2
     )
 
-  def process(entries: String, slope: (Int, Int)): Int =
+  def parse(str: String) = str split "\n"
 
-    val lines  = entries.split("\n")
+  def partOne(in: Input): Int = process(in, (3, 1))
+
+  def partTwo(in: Input): Long =
+    part2Slopes.map(process(in, _).toLong).product
+  
+  def process(lines: Input, slope: (Int, Int)): Int =
     val height = lines.size
     val width  = lines(0).size
 
@@ -38,9 +43,3 @@ object Day3 extends Exercise:
         go(tc, (x + slope._1) % width, y + slope._2)
 
     go(0, 0, 0)
-
-
-  def partOne(in: String): Int = process(in, (3, 1))
-
-  def partTwo(in: String): Long =
-    part2Slopes.map(process(in, _).toLong).product
