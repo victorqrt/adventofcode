@@ -26,7 +26,6 @@ object Day7 extends Exercise[Map[String, Seq[String]]]:
   def partTwo(in: Input): Int = two("shiny gold", in)
 
   def one(color: String, rules: Input): Int =
-
     @tailrec
     def go(todo: Set[String], acc: Set[String]): Set[String] =
       if (todo.isEmpty) acc
@@ -39,7 +38,6 @@ object Day7 extends Exercise[Map[String, Seq[String]]]:
     go(Set(color), Set.empty).size
 
   def two(color: String, rules: Input): Int =
-
     @tailrec
     def go(todo: ArraySeq[String], acc: Int): Int =
       if (todo.isEmpty) acc

@@ -5,7 +5,6 @@ import cats.effect._
 import cats.implicits._
 import cats.Monad
 import scala.io.Source
-import scala.quoted._
 import Utils._
 
 
@@ -18,8 +17,8 @@ trait Exercise[A]:
 
   def parse(str: String): Input
 
-  def partOne(in: Input): Any
-  def partTwo(in: Input): Any
+  def partOne(in: Input): AnyVal
+  def partTwo(in: Input): AnyVal
 
   def run[F[_] : Monad : Sync](path: String): F[Unit] =
     for

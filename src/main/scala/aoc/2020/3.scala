@@ -32,9 +32,7 @@ object Day3 extends Exercise[Array[String]]:
 
     @tailrec
     def go(treeCount: Int, x: Int, y: Int): Int =
-
       if (y >= height) treeCount
-
       else
         val tc = lines(y)(x) match
           case '#' => treeCount + 1
