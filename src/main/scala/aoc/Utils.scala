@@ -17,8 +17,8 @@ trait Exercise[A]:
 
   def parse(str: String): Input
 
-  def partOne(in: Input): AnyVal
-  def partTwo(in: Input): AnyVal
+  def partOne(in: Input): Any
+  def partTwo(in: Input): Any
 
   def run[F[_] : Monad : Sync](path: String): F[Unit] =
     for
