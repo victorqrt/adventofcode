@@ -10,7 +10,7 @@ object Main extends IOApp:
   def run(args: List[String]) =
     exercises
       .map { case e -> f => e.run[IO](f) }
-      .parSequence as ExitCode.Success
+      .sequence as ExitCode.Success
 
   val exercises = List
     ( aoc.y20.Day1  -> "inputs/2020/1.txt"
@@ -34,12 +34,14 @@ object Main extends IOApp:
     , aoc.y21.Day8  -> "inputs/2021/8.txt"
     , aoc.y21.Day9  -> "inputs/2021/9.txt"
     , aoc.y21.Day10 -> "inputs/2021/10.txt"
-    
+ 
     , aoc.y22.Day1  -> "inputs/2022/1.txt"
     , aoc.y22.Day2  -> "inputs/2022/2.txt"
     , aoc.y22.Day3  -> "inputs/2022/3.txt"
     , aoc.y22.Day4  -> "inputs/2022/4.txt"
     , aoc.y22.Day5  -> "inputs/2022/5.txt"
     , aoc.y22.Day6  -> "inputs/2022/6.txt"
+    , aoc.y22.Day7  -> "inputs/2022/7.txt"
+    , aoc.y22.Day10 -> "inputs/2022/10.txt"
     , aoc.y22.Day20 -> "inputs/2022/20.txt"
     )
