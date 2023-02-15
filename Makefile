@@ -17,4 +17,6 @@ native: aoc
 	strip -s aoc
 	[ -x "$(shell command -v upx)" ] && upx aoc
 
-.PHONY: clean native
+re: clean aoc.jar 
+
+.PHONY: clean native re
