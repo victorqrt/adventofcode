@@ -42,6 +42,8 @@ object Main extends IOApp:
     , aoc.y22.Day5  -> "inputs/2022/5.txt"
     , aoc.y22.Day6  -> "inputs/2022/6.txt"
     , aoc.y22.Day7  -> "inputs/2022/7.txt"
+    , aoc.y22.Day9  -> "inputs/2022/9.txt"
     , aoc.y22.Day10 -> "inputs/2022/10.txt"
+    , aoc.y22.Day11 -> "inputs/2022/11.txt"
     , aoc.y22.Day20 -> "inputs/2022/20.txt"
     )

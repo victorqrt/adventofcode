@@ -2,6 +2,7 @@ package aoc
 
 
 import cats.effect._
+import cats.effect.std._
 import cats.implicits._
 import cats.Monad
 import scala.io.Source
@@ -20,13 +21,13 @@ trait Exercise[A]:
   def partOne(in: Input): Any
   def partTwo(in: Input): Any
 
-  def run[F[_] : Monad : Sync](path: String): F[Unit] =
+  def run[F[_] : Console : Sync](path: String): F[Unit] =
     for
       fd <- readFile[F](path)
-      in = parse(fd)
-      p1 = partOne(in)
-      p2 = partTwo(in)
-      _  <- S delay println(s"[$year] [Day $day] $p1, $p2")
+      in  = parse(fd)
+      p1  = partOne(in)
+      p2  = partTwo(in)
+      _  <- Console[F]println(s"[$year] [Day $day] $p1, $p2")
     yield
       ()
 
