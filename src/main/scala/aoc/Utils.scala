@@ -34,11 +34,9 @@ trait Exercise[A]:
 
 object Utils:
 
-  inline def S[F[_] : Sync] = summon
-
   def readFile[F[_] : Sync](path: String): F[String] =
-    Resource.fromAutoCloseable(S delay Source.fromFile(path))
-            .use(S delay _.mkString)
+    Resource.fromAutoCloseable(Sync[F] delay Source.fromFile(path))
+            .use(Sync[F] delay _.mkString)
 
   extension (b: Boolean)
     def toInt: Int = if b then 1 else 0

@@ -1,10 +1,7 @@
-.bsp
-.bloop
-.metals
-.vscode
-project/
-target
+**/.bsp
+**/.bloop/
+**/.scala-build
+**/*.build_artifacts.txt
+**/*.jar
 
-*.worksheet.sc
-!project/plugins.sbt
-!project/build.properties
+dependencies.scala
