@@ -6,6 +6,8 @@ import aoc.Utils._
 import scala.annotation.tailrec
 
 
+// TODO: originalIdx -> (value, idx)
+// object Day20_2 extends Exercise[Map[Int, (Long, Int)]]:
 object Day20 extends Exercise[Array[(Long, Int)]]:
 
   val day  = 20
@@ -26,7 +28,7 @@ object Day20 extends Exercise[Array[(Long, Int)]]:
     val jmp          = (n + i) % (arr.size - 1)
     val newIdx       = if jmp > 0 then jmp else arr.size - 1 + jmp
     val (head, tail) = arr.filter(_._2 != idx) splitAt newIdx.toInt
-    
+
     (head :+ (n -> idx)) ++ tail
 
   @tailrec
@@ -35,7 +37,7 @@ object Day20 extends Exercise[Array[(Long, Int)]]:
     def go(_arr: Input, i: Int): Input =
       if i == _arr.size then _arr
       else go(move(_arr, i), i + 1)
-    
+
     if n == 0 then arr
     else mix(go(arr, 0), n - 1)
 

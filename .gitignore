@@ -1,7 +1,8 @@
 **/.bsp
-**/.bloop/
+**/.bloop
 **/.scala-build
 **/*.build_artifacts.txt
 **/*.jar
 
+./aoc
 dependencies.scala

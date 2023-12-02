@@ -1,9 +1,9 @@
 SCALA_CLI := scala-cli
-SCALA_VER := 3.3.1
+SOURCES   := $(shell find src -name '*.scala')
 
 
 define SCALA_DEPS =
-//> using scala ${SCALA_VER}
+//> using scala 3.3.1
 //> using repository sonatype:snapshots
 //> using dep org.typelevel::cats-core:2.10.0
 //> using dep org.typelevel::cats-effect:3.5.2
@@ -12,11 +12,11 @@ endef
 export SCALA_DEPS
 
 
-aoc.jar: dependencies.scala
-	${SCALA_CLI} --power package . -o $@ --assembly
+aoc.jar: dependencies.scala ${SOURCES}
+	${SCALA_CLI} --power package . -o $@ -f --assembly
 
 
-aoc: dependencies.scala
+aoc: dependencies.scala ${SOURCES}
 	${SCALA_CLI} --power package . -o $@ --native-image \
 		-- --gc=G1 --no-fallback --static -march=native -O2
 
